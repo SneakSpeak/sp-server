@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -15,5 +16,9 @@
   "bugs": {
     "url": "https://github.com/SneakSpeak/sp-server/issues"
   },
-  "homepage": "https://github.com/SneakSpeak/sp-server#readme"
+  "homepage": "https://github.com/SneakSpeak/sp-server#readme",
+  "dependencies": {
+    "body-parser": "^1.14.2",
+    "socketio-jwt": "^4.3.4"
+  }
 }
