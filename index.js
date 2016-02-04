@@ -6,9 +6,15 @@ var io = require('socket.io')(http);
 var socketioJwt = require('socketio-jwt');
 var bodyParser = require('body-parser');
 
+var apiUser = require('./routes/user');
+var apiMessage = require('./routes/message');
+
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+app.use('/api/user/', apiUser);
+app.use('/api/message/', apiMessage);
 
 
 var jwtSecret = "salalause";
