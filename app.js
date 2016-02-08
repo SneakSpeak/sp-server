@@ -1,9 +1,6 @@
 var express = require('express');
 var app = express();
 var http = require('http').Server(app);
-var jwt = require('jsonwebtoken');
-var io = require('socket.io')(http);
-var socketioJwt = require('socketio-jwt');
 var bodyParser = require('body-parser');
 
 var apiUser = require('./routes/user');
@@ -13,6 +10,13 @@ var apiMessage = require('./routes/message');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+
+var testi = function testi(req, res, next) {
+  console.log("["+req.ip+"]: "+req.method+" " +req.originalUrl);
+  res.sendStatus(200);
+}
+
+app.use(testi);
 app.use('/api/user/', apiUser);
 app.use('/api/message/', apiMessage);
 
@@ -46,4 +50,4 @@ app.post('/login', function (req, res) {
   res.json({token: token});
 });
 
-app.listen(3000);
+module.exports=app;
