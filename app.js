@@ -8,12 +8,13 @@ var apiMessage = require('./routes/message');
 
 
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({ extended: false }));
 
 
 var testi = function testi(req, res, next) {
   console.log("["+req.ip+"]: "+req.method+" " +req.originalUrl);
-  res.sendStatus(200);
+  //res.sendStatus(200);
+  next();
 }
 
 app.use(testi);
