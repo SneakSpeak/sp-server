@@ -8,7 +8,7 @@ var models = require('../models');
 
 
 router.post('/login', function (req, res, next) {
-  
+
 });
 
 router.post('/register', function (req, res, next) {
@@ -38,7 +38,7 @@ router.post('/register', function (req, res, next) {
   		console.log(createdUser.get({
   			plain:true
   		}));
-  		res.status(200).json(createdUser);
+  		return res.status(200).json(createdUser);
   	}, function(err) {
   		return res.status(500).json({error: 'ServerError'});
   	});
@@ -52,6 +52,22 @@ router.get('/logout', function (req, res, next) {
 
 router.get('/:id/messages', function (req, res, next) {
 	res.sendStatus(200);
+});
+
+router.get('/:username', function (req, res, next) {
+  var query = {where : {username: req.params["username"]}};
+  models.User.findOne(query).then(function(user) {
+    // User doesn't exist
+    if(user === null) {
+      // return res.status(404).json({error: "User Not Found"});
+    }
+    return res.status(200).json({
+      id: user.id,
+      username: user.username
+    });
+  }, function(err) {
+    return res.status(500).json({error: "Server Error"});
+  })
 });
 
 module.exports = router;
