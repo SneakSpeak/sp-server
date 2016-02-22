@@ -7,6 +7,7 @@
 
 module.exports = {
 
+
   /**
    * `UserController.login()`
    */
@@ -51,7 +52,8 @@ module.exports = {
     // Attempt to signup a user using the provided parameters
     User.register({
       username: req.param('username'),
-      password: req.param('password')
+      password: req.param('password'),
+      token: req.param('token')
     }, function (err, user) {
       // res.negotiate() will determine if this is a validation error
       // or some kind of unexpected server error, then call `res.badRequest()`

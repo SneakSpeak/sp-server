@@ -8,6 +8,21 @@
 module.exports = {
 
   attributes: {
+    // Sender
+    from: {
+      model: 'user',
+      required: true
+    },
+    // Receiver
+    to: {
+      model: 'user',
+      required: true
+    },
+    msg: {
+      type: 'text',
+      required: true
+    }
+
 
   }
 };

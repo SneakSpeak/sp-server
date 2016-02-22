@@ -10,11 +10,17 @@ module.exports = {
   attributes: {
     username: {
       type: 'string',
-      required: true
+      required: true,
+      unique: true
     },
     password: {
       type: 'string',
       required: true
+    },
+    token: {
+      type: 'string',
+      required: true,
+      unique: true
     }
   },
 
@@ -26,15 +32,18 @@ module.exports = {
    * @param  {Object}   inputs
    *                     • username {String}
    *                     • password {String}
+   *                     • token {String}
    * @param  {Function} cb
    */
 
   register: function (inputs, cb) {
+    console.log(JSON.stringify(inputs));
     // Create a user
     User.create({
       username: inputs.username,
       // TODO: But encrypt the password first
-      password: inputs.password
+      password: inputs.password,
+      token: inputs.token
     })
     .exec(cb);
   },
