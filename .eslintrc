@@ -1,0 +1,8 @@
+{
+    "env": {
+    "node": true
+    },
+    "rules": {
+      "eqeqeq": [2, "smart"]
+    }
+}
