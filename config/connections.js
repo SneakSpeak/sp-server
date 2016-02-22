@@ -18,6 +18,7 @@
  * For more information on configuration, check out:
  * http://sailsjs.org/#!/documentation/reference/sails.config/sails.config.connections.html
  */
+var env = require('./local').environment;
 
 module.exports.connections = {
 
@@ -48,7 +49,7 @@ module.exports.connections = {
       /**
        * Set to true to output SQL queries
        */
-      debug: false
+      debug: env == 'development'
     }
 
 
