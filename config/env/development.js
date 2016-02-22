@@ -22,6 +22,15 @@ module.exports = {
   // }
   //
 
-  port: 3000
-
+  port: 3000,
+  connections: {
+    sqlitedb: {
+      adapter: 'waterline-sqlite3',
+      filename: './tmp/db.sqlite',
+      debug: true
+    },
+    models: {
+      connections: 'sqlitedb'
+    }
+  }
 };
