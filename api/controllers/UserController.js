@@ -78,13 +78,18 @@ module.exports = {
 
 
   poke: function poke(req, res) {
-    User.poke({
+    User.findOne({
       username: req.param("username"),
-      message: req.param("message"),
     }, function(err, user) {
       if (err) return res.negotiate(err);
       if(!user) return res.send(404,"User Not Found");
-      return res.ok("Test push should have been sent...");
+      sails.log("Pushing...");
+      PusherService
+        .send([user.device], {
+          body: req.param("message")
+        })
+        .then(function(res) {sails.log("Push OK: " + res); return res.ok()})
+        .catch(function(err) {sails.log("Push FAILED: " + err); return res.negotiate();});
     })
   },
 };
