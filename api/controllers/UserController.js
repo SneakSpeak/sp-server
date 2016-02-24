@@ -74,5 +74,17 @@ module.exports = {
       // Otherwise if this is an HTML-wanting browser, redirect to /welcome.
       return res.redirect('/welcome');
     });
-  }
+  },
+
+
+  poke: function poke(req, res) {
+    User.poke({
+      username: req.param("username"),
+      message: req.param("message"),
+    }, function(err, user) {
+      if (err) return res.negotiate(err);
+      if(!user) return res.send(404,"User Not Found");
+      return res.ok("Test push should have been sent...");
+    })
+  },
 };
