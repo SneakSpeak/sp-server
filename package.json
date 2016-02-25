@@ -22,11 +22,12 @@
     "rc": "1.0.1",
     "sails": "~0.12.1",
     "sails-disk": "~0.10.9",
+    "sails-hook-push": "0.0.3",
     "sails-service-pusher": "^3.2.2",
     "waterline-sqlite3": "^1.0.0"
   },
   "devDependencies": {
-    "eslint":"~2.2.0"
+    "eslint": "~2.2.0"
   },
   "scripts": {
     "debug": "node debug app.js",
@@ -40,5 +41,4 @@
   },
   "author": "Vaaralav",
   "license": "MIT"
-
 }

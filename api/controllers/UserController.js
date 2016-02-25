@@ -77,19 +77,53 @@ module.exports = {
   },
 
 
+  // poke: function poke(req, res) {
+  //   var useri = "meitsi";
+  //   User.findOne({
+  //     username: useri,
+  //   }, function(err, user) {
+  //     if (err) return res.negotiate(err);
+  //     if(!user) return res.send(404,"User Not Found");
+  //     sails.log("Pushing...");
+  //     sails.log("Token: [" + user.token + "]");
+  //     sails.log("Server API key: " + sails.config.GCMkey);
+  //     PusherService
+  //       .send([user.token], {
+  //         body: "Hello world!"
+  //       })
+  //       /*
+  //       .then(function(response) {sails.log("Push OK: " + JSON.stringify(response)); res.ok("Push sent!");})
+  //       .catch(function(err) {sails.log("Push FAILED: " + err); return res.negotiate();});
+  //       */
+  //      .then(console.log.bind(console))
+  //      .catch(console.error.bind(console));
+  //   })
+  // },
+
   poke: function poke(req, res) {
-    User.findOne({
-      username: req.param("username"),
-    }, function(err, user) {
-      if (err) return res.negotiate(err);
-      if(!user) return res.send(404,"User Not Found");
-      sails.log("Pushing...");
-      PusherService
-        .send([user.device], {
-          body: req.param("message")
-        })
-        .then(function(res) {sails.log("Push OK: " + res); return res.ok()})
-        .catch(function(err) {sails.log("Push FAILED: " + err); return res.negotiate();});
+    var useri = "jorkki";
+    User.findOne({username: useri}, function(err, user) {
+      if(err) return res.negotiate(err);
+      if(!user) return res.send(404, "User Not Found");
+
+      sails.services.pushnotification.sendGCMNotification(user.token,
+      {
+        data: {
+          key1: 'message1',
+          key2: 'message2'
+        },
+        notification: {
+          title: "SneakSpeak Push Test",
+          icon: "ic_launcher",
+          body: "Testing, testing..."
+        }
+      }, true, function(err, results) {
+        if(err) {
+          return res.negotiate(err);
+        }
+        return res.send(200, results);
+      });
+
     })
   },
 };
