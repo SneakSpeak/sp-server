@@ -129,15 +129,27 @@ module.exports = {
   },
 
   list: function list(req, res) {
-    User.find({
-      where: {username: {"!": req.param("username")} },
-      select: ['username']
+    if(!req.param("username")) {
+      return res.send(400, "Username Not Provided");
+    }
 
-    }, function(err, users) {
-      if(err) return res.negotiate(err);
-      // Make array of usernames
-      var userArray = users.map(function(a) {return a.username;});
-      res.ok(JSON.stringify(userArray));
-    })
+    // Check if the user exists
+    User.findOne({
+      where: {username: req.param("username")}}, function (err, user){
+        if(err) return res.negotiate(err);
+        if(!user) return res.send(404, "User Not Found");
+
+        // Find all users except the one asking the list
+        User.find({
+          where: {username: {"!": req.param("username")} },
+          select: ['username']
+
+        }, function(err, users) {
+          if(err) return res.negotiate(err);
+          // Make array of usernames
+          var userArray = users.map(function(a) {return a.username;});
+          res.ok(JSON.stringify(userArray));
+        });
+    });
   }
 };
