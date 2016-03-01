@@ -16,7 +16,7 @@ module.exports = {
     // See `api/responses/login.js`
     return res.login({
       username: req.param('username'),
-      password: req.param('password'),
+      //password: req.param('password'),
       successRedirect: '/',
       invalidRedirect: '/login'
     });
@@ -50,9 +50,9 @@ module.exports = {
   register: function (req, res) {
 
     // Attempt to signup a user using the provided parameters
-    User.register({
+    User.create({
       username: req.param('username'),
-      password: req.param('password'),
+      //password: req.param('password'),
       token: req.param('token')
     }, function (err, user) {
       // res.negotiate() will determine if this is a validation error
@@ -68,7 +68,7 @@ module.exports = {
       // If this is not an HTML-wanting browser, e.g. AJAX/sockets/cURL/etc.,
       // send a 200 response letting the user agent know the signup was successful.
       if (req.wantsJSON) {
-        return res.ok('Signup successful!');
+        return res.redirect('/api/user/list?username=' + user.username);
       }
 
       // Otherwise if this is an HTML-wanting browser, redirect to /welcome.
@@ -127,4 +127,17 @@ module.exports = {
 
     })
   },
+
+  list: function list(req, res) {
+    User.find({
+      where: {username: {"!": req.param("username")} },
+      select: ['username']
+
+    }, function(err, users) {
+      if(err) return res.negotiate(err);
+      // Make array of usernames
+      var userArray = users.map(function(a) {return a.username;});
+      res.ok(JSON.stringify(userArray));
+    })
+  }
 };

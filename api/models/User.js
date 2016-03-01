@@ -13,10 +13,10 @@ module.exports = {
       required: true,
       unique: true
     },
-    password: {
-      type: 'string',
-      required: true
-    },
+    // password: {
+    //   type: 'string',
+    //   required: true
+    // },
     token: {
       type: 'string',
       required: true,
@@ -36,7 +36,7 @@ module.exports = {
    * @param  {Function} cb
    */
 
-  register: function (inputs, cb) {
+  register: function register(inputs, cb) {
     console.log(JSON.stringify(inputs));
     // Create a user
     User.create({
@@ -44,8 +44,14 @@ module.exports = {
       // TODO: But encrypt the password first
       password: inputs.password,
       token: inputs.token
-    })
-    .exec(cb);
+    }, function(err, user) {
+      if(err) {
+        sails.log(err)
+        throw err;
+      };
+      cb();
+    });
+    //.exec(cb);
   },
 
 
