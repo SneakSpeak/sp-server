@@ -101,10 +101,10 @@ module.exports = {
   // },
 
   poke: function poke(req, res) {
-    var useri = "jorkki";
+    var useri = req.param("username");
     User.findOne({username: useri}, function(err, user) {
       if(err) return res.negotiate(err);
-      if(!user) return res.send(404, "User Not Found");
+      if(!user) return res.send(404, "User Not Found") && sails.log("404 User Not Found");
 
       sails.services.pushnotification.sendGCMNotification(user.token,
       {
@@ -115,7 +115,8 @@ module.exports = {
         notification: {
           title: "SneakSpeak Push Test",
           icon: "ic_launcher",
-          body: "Testing, testing..."
+          body: "Testing, testing...",
+          sound: "default"
         }
       }, true, function(err, results) {
         if(err) {
