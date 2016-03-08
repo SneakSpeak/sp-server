@@ -1,9 +1,12 @@
 {
   "name": "sp-server",
-  "private": true,
   "version": "0.0.0",
-  "description": "a Sails application",
-  "keywords": [],
+  "description": "Group chat server.",
+  "keywords": [
+  "sails",
+  "internet of things",
+  "media services"
+  ],
   "dependencies": {
     "ejs": "2.3.4",
     "grunt": "0.4.5",
@@ -31,13 +34,12 @@
   },
   "scripts": {
     "debug": "node debug app.js",
-    "start": "node app.js",
-    "resetdb": "rm .tmp/sqlitedb.sqlite"
+    "start": "node app.js"
   },
   "main": "app.js",
   "repository": {
     "type": "git",
-    "url": "git://github.com/Vaaralav/sp-server.git"
+    "url": "git://github.com/SneakSpeak/sp-server.git"
   },
   "author": "Vaaralav",
   "license": "MIT"
