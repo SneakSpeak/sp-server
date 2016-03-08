@@ -22,6 +22,10 @@ module.exports = {
       type: 'string',
       required: true,
       unique: true
+    },
+    subscriptions: {
+      collection: 'channel',
+      via: 'participants'
     }
   },
 

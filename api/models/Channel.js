@@ -11,7 +11,13 @@ module.exports = {
     name: {
       type: 'text',
       unique: true,
-      required: true
+      required: true,
+      primaryKey: true
+    },
+    participants: {
+      collection: 'user',
+      via: 'subscriptions',
+      dominant: true
     }
 
   }
