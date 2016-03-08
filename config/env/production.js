@@ -42,6 +42,9 @@ module.exports = {
       ssl: true,
       schema: true
     }
+  },
+  push: {
+    gcm: process.env.GCMKey
   }
 
 };
