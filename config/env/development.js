@@ -33,4 +33,14 @@ module.exports = {
   //     connections: 'sqlitedb'
   //   }
   // }
+  connections: {
+    postgresql: {
+      adapter: 'sails-postgresql',
+      host: 'localhost',
+
+
+      //port: '5432',
+      poolSize: 1
+    }
+  }
 };
