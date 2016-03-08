@@ -49,6 +49,23 @@ module.exports.connections = {
        * Set to true to output SQL queries
        */
       //debug: sails.config.environment === 'development'
+    },
+    /***************************************************************************
+    *                                                                          *
+    * PostgreSQL is another officially supported relational database.          *
+    * http://en.wikipedia.org/wiki/PostgreSQL                                  *
+    *                                                                          *
+    * Run: npm install sails-postgresql                                        *
+    *                                                                          *
+    *                                                                          *
+    ***************************************************************************/
+    postgresql: {
+      adapter: 'sails-postgresql',
+      host: 'localhost',
+
+
+      //port: '5432',
+      poolSize: 1
     }
 
 
