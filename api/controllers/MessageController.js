@@ -48,7 +48,7 @@ module.exports = {
               key2: 'message2'
             },
             notification: {
-              title: "SneakSpeak Push Test",
+              title: sender.username,
               icon: "ic_launcher",
               body: msg.msg,
               sound: "default"
@@ -62,6 +62,6 @@ module.exports = {
         })
       })
     })
-  }
+  },
 };
 

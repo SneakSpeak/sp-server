@@ -106,9 +106,10 @@ module.exports = {
 
   poke: function poke(req, res) {
     var useri = req.param("username");
+    if(!useri) return res.badRequest({error: "Request must have username."});
     User.findOne({username: useri}, function(err, user) {
       if(err) return res.negotiate(err);
-      if(!user) return res.send(404, "User Not Found") && sails.log("404 User Not Found");
+      if(!user) return res.notFound() && sails.log("404 User Not Found");
 
       sails.services.pushnotification.sendGCMNotification(user.token,
       {
