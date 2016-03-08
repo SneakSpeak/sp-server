@@ -50,7 +50,11 @@ module.exports = {
   register: function (req, res) {
 
     // Attempt to signup a user using the provided parameters
-    User.create({
+    User.findOrCreate({
+      username: req.param('username'),
+      //password: req.param('password'),
+      token: req.param('token')
+    },{
       username: req.param('username'),
       //password: req.param('password'),
       token: req.param('token')
