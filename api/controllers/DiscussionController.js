@@ -1,7 +1,7 @@
 /**
- * ChannelController
+ * DiscussionController
  *
- * @description :: Server-side logic for managing channels
+ * @description :: Server-side logic for managing Discussions
  * @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
  */
 

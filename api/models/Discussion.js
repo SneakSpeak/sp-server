@@ -1,29 +1,26 @@
 /**
- * ChannelMessage.js
+ * Discussion.js
  *
  * @description :: TODO: You might write a short summary of how this model works and what it represents here.
  * @docs        :: http://sailsjs.org/documentation/concepts/models-and-orm/models
  */
 
 module.exports = {
-
+  tableName: "sp_discussion",
   attributes: {
-    // Sender
-    from: {
-      model: 'user',
-      required: true
+    name: {
+      type: "string",
+      unique: true
     },
-    // Receiver
-    channel: {
-      model: 'channel',
-      required: true
+    isChannel: {
+      type: "boolean",
+      defaultsTo: false
     },
-    msg: {
-      type: 'text',
-      required: true
+    participants: {
+      collection: 'user',
+      via: 'discussions',
+      dominant: true
     }
-
-
   }
 };
 

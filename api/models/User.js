@@ -6,7 +6,7 @@
 */
 
 module.exports = {
-
+  tableName: "sp_user",
   attributes: {
     username: {
       type: 'string',
@@ -14,17 +14,18 @@ module.exports = {
       unique: true,
       primaryKey: true
     },
-    // password: {
-    //   type: 'string',
-    //   required: true
-    // },
+    password: {
+      type: 'string',
+      required: true,
+      defaultsTo: 'loljoqpassu'
+    },
     token: {
       type: 'string',
       required: true,
       unique: true
     },
-    subscriptions: {
-      collection: 'channel',
+    discussions: {
+      collection: 'discussion',
       via: 'participants'
     }
   },
