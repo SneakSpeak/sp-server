@@ -9,10 +9,10 @@ var message = gcm.on('message', function(messageId, from, category, data) {
 
     sails.log(from + " : " + JSON.stringify(data,null,2));
     // ACK received message
-    gcm.send(from, {
-        message_id: messageId,
-        message_type: "ack"
-    });
+    // gcm.send(from, {
+    //     message_id: messageId,
+    //     message_type: "ack"
+    // });
 
     /**
      * Handle the upstream message
@@ -41,7 +41,7 @@ var message = gcm.on('message', function(messageId, from, category, data) {
           }
 
           // toUser.sendGCM({data: {message: data.message}, notification: {title: fromUser.username, text: data.message.substring(0,20)}});
-          gcm.send(toUser.token, {data: {message: data.message}, notification: {title: fromUser.username, text: data.message.substring(0,20)}}, {delivery_receipt_requested: true},
+          gcm.send(toUser.token, {data: {message: data.message}, notification: {title: fromUser.username, text: data.message.substring(0,41)}}, {delivery_receipt_requested: true},
             function(err, messageId, to) {
               if(err) sails.log(err);
               sails.log(to + ":\n" + messageId);
