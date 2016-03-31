@@ -1,4 +1,4 @@
-var gcm = require('node-gcm-ccs')(sails.config.push.gcm.projectNumber, sails.config.push.gcm.senderId);
+var gcm = require('node-gcm-ccs')(sails.config.gcm.projectNumber, sails.config.gcm.apiKey);
 
 var transmitPrivateMessage = function transmitPrivateMessage(senderToken, receiverName, message, messageId) {
   messageId = messageId || null;

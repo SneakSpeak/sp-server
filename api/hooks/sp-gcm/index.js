@@ -1,9 +1,9 @@
 // index.js
 
 
-var gcm = require('node-gcm-ccs')(sails.config.push.gcm.projectNumber, sails.config.push.gcm.senderId);
+var gcm = require('node-gcm-ccs')(sails.config.gcm.projectNumber, sails.config.gcm.apiKey);
 var helpers = require('./helpers');
-
+sails.log(sails.config.gcm.apiKey, sails.config.gcm.projectNumber);
 var queue = {};
 // Event listener for incoming messages
 var message = gcm.on('message', function(messageId, from, category, data) {

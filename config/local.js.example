@@ -82,7 +82,10 @@ module.exports = {
 
    environment: process.env.NODE_ENV || 'development',
 
-   GCMkey: "YOUR_GCM_SERVER_API_KEY_HERE",
+   gcm : {
+       apiKey : "YOUR_SERVER_API_KEY_HERE", //Server API key
+       projectNumber: YOUR_PROJECT_NUMBER_HERE // Google Project Number as a number
+   },
 
    connections: {
     // Settings for local Postgres.app
