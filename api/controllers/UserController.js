@@ -111,25 +111,8 @@ module.exports = {
       if(err) return res.negotiate(err);
       if(!user) return res.notFound() && sails.log("404 User Not Found");
 
-      sails.services.pushnotification.sendGCMNotification(user.token,
-      {
-        data: {
-          key1: 'message1',
-          key2: 'message2'
-        },
-        notification: {
-          title: "SneakSpeak Push Test",
-          icon: "ic_launcher",
-          body: "Testing, testing...",
-          sound: "default"
-        }
-      }, true, function(err, results) {
-        if(err) {
-          return res.negotiate(err);
-        }
-        return res.send(200, results);
-      });
-
+      sails.hooks["sp-gcm"].sendPrivateMessage(useri, "Testing", "Testing");
+      res.ok();
     })
   },
 
