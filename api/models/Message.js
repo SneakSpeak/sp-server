@@ -6,16 +6,15 @@
  */
 
 module.exports = {
-
+  tableName: "sp_message",
   attributes: {
     // Sender
     from: {
       model: 'user',
-      required: true
     },
     // Receiver
-    to: {
-      model: 'user',
+    discussion: {
+      model: 'discussion',
       required: true
     },
     msg: {
