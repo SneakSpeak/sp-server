@@ -25,8 +25,7 @@ var sendPrivateMessage = function sendPrivateMessage(receiverName, title, messag
       return false;
     }
 
-    // toUser.sendGCM({data: {message: message}, notification: {title: fromUser.username, text: message.substring(0,20)}});
-    gcm.send(toUser.token, {data: {message: message, title: title}, notification: {title: title, text: message.substring(0,41)}}, {delivery_receipt_requested: false},
+    gcm.send(toUser.token, {time_to_live: 0, data: {message: message, title: title}, notification: {title: title, text: message.substring(0,41)}}, {delivery_receipt_requested: false},
       function(err, messageId, to) {
         if(err) {
           sails.log(err);
