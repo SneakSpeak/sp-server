@@ -11,11 +11,11 @@ var transmitPrivateMessage = function transmitPrivateMessage(senderToken, receiv
       gcm.send(senderToken, {data: {err: "Token Not Found"}});
       return;
     }
-   sendPrivateMessage(receiverName, fromUser.username, message, messageId);
+   sendToUser(receiverName, fromUser.username, message, messageId);
   });
 }
 
-var sendPrivateMessage = function sendPrivateMessage(receiverName, title, message, messageId) {
+var sendToUser = function sendToUser(receiverName, title, message, messageId) {
   // Find the receiving user
   User.findOne(receiverName).exec(function(err, toUser){
 
@@ -42,5 +42,5 @@ var sendPrivateMessage = function sendPrivateMessage(receiverName, title, messag
 
 module.exports = {
   transmitPrivateMessage: transmitPrivateMessage,
-  sendPrivateMessage: sendPrivateMessage
+  sendToUser: sendToUser
 }

@@ -111,7 +111,7 @@ module.exports = {
       if(err) return res.negotiate(err);
       if(!user) return res.notFound() && sails.log("404 User Not Found");
 
-      sails.hooks["sp-gcm"].sendPrivateMessage(useri, "Testing", "Testing");
+      sails.hooks["sp-gcm"].sendToUser(useri, "Testing", "Testing");
       res.ok();
     })
   },
