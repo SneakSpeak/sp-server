@@ -117,27 +117,30 @@ module.exports = {
   },
 
   list: function list(req, res) {
-    if(!req.param("username")) {
-      return res.send(400, "Username Not Provided");
-    }
+    User.authUser(req, function(err, user) {
+      if(err) return res.negotiate(err);
+      if(!user) return res.notFound();
+      // Find all users except the one asking the list
+      User.find({
+        where: {username: {"!": req.param("username")} },
+        select: ['username']
 
-    // Check if the user exists
-    User.findOne({
-      where: {username: req.param("username")}}, function (err, user){
+      }, function(err, users) {
         if(err) return res.negotiate(err);
-        if(!user) return res.send(404, "User Not Found");
-
-        // Find all users except the one asking the list
-        User.find({
-          where: {username: {"!": req.param("username")} },
-          select: ['username']
-
-        }, function(err, users) {
-          if(err) return res.negotiate(err);
-          // Make array of usernames
-          var userArray = users.map(function(a) {return a.username;});
-          res.ok(JSON.stringify(userArray));
-        });
+        // Make array of usernames
+        var userArray = users.map(function(a) {return a.username;});
+        res.ok(JSON.stringify(userArray));
+      });
     });
+  },
+  discussions: function discussions(req, res) {
+    User.authUser(req, function(err, user) {
+      User.findOne({username: user.username}).populate('discussions')
+        .exec(function (err, discussions) {
+          if(err) return res.negotiate(err);
+          return res.json(discussions);
+        });
+    })
+
   }
 };
