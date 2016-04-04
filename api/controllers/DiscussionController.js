@@ -33,4 +33,41 @@ module.exports = {
         res.ok(matchingRecords);
       });
     },
+    findOne: function findOne(req, res ) {
+
+      var pk = actionUtil.requirePk(req);
+
+        var query = Discussion.findOne(pk);
+        query = actionUtil.populateRequest(query, req);
+        query.exec(function Discussion(err, matchingRecord) {
+          if (err) return res.serverError(err);
+          if(!matchingRecord) return res.notFound('No record found with the specified `id`.');
+          if(!matchingRecord.isChannel) {
+            User.authUser(req, function(err, user) {
+              if(err) return res.negotiate(err);
+              if(!user) return res.notFound();
+
+              //user.populate('discussions');
+
+              var isParticipant = user.discussions.find(function (d) {
+                sails.log(d);
+                return d.id === matchingRecord.id;
+              });
+
+              if(!isParticipant) {
+                return res.json(403, {error: "Acces Denied"});
+              }
+              return res.ok(matchingRecord);
+            })
+          } else {
+            return res.ok(matchingRecord);
+          }
+          if (req._sails.hooks.pubsub && req.isSocket) {
+            Discussion.subscribe(req, matchingRecord);
+            actionUtil.subscribeDeep(req, matchingRecord);
+          }
+
+          //return res.ok(matchingRecord);
+        });
+    },
 };

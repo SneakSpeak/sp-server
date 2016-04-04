@@ -90,7 +90,7 @@ module.exports = {
     // Check if the user exists
     User.findOne({
       where: {username: req.param("username")}
-    }, function (err, user){
+    }).populate('discussions').exec( function (err, user){
         cb(err, user);
     });
 
