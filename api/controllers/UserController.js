@@ -138,7 +138,7 @@ module.exports = {
       User.findOne({username: user.username}).populate('discussions')
         .exec(function (err, discussions) {
           if(err) return res.negotiate(err);
-          return res.json(discussions);
+          return res.json(discussions.discussions);
         });
     })
 
