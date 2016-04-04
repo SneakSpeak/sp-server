@@ -82,4 +82,20 @@ module.exports = {
     .exec(cb);
   },
 
+  authUser: function( req, cb ){
+    if(!req.param("username")) {
+      return cb("Invalid Criteria");
+    }
+
+    // Check if the user exists
+    User.findOne({
+      where: {username: req.param("username")}
+    }, function (err, user){
+        cb(err, user);
+    });
+
+  }
+
+
+
 };
