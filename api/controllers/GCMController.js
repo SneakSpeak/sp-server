@@ -7,7 +7,7 @@
 
 module.exports = {
 key: function key(req, res) {
-  sails.log("Google Project Number: " + sails.config.push.gcm.projectNumber);
-  res.json(sails.config.push.gcm.projectNumber);
+  sails.log("Google Project Number: " + sails.config.gcm.projectNumber);
+  res.json(sails.config.gcm.projectNumber);
 }
 };
