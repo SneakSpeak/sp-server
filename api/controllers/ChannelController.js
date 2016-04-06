@@ -44,5 +44,29 @@ module.exports = {
           return res.json(channel);
         })
       });
+    },
+    join: function joinChannel(req, res) {
+      User.authUser(req, function(err, user) {
+        if (err) return res.negotiate(err);
+
+        Discussion.findOne(req.param("channelID"))
+          //.where({isChannel: true})
+          .populate('participants')
+          .exec(function joinChannel(err, channel) {
+            if(err) return res.negotiate(err);
+            if(!channel) return res.notFound("Channel Not Found");
+
+            user.discussions.add(channel);
+            user.save(function(err, u) {
+              if(err) return res.negotiate(err);
+
+              Discussion.findOne(channel.id).populate('participants')
+                .exec(function response(err, c) {
+                  return res.ok(c);
+                })
+            });
+            // return res.json(channel);
+          })
+      })
     }
 };
