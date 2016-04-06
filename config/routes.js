@@ -45,7 +45,5 @@ module.exports.routes = {
   * for configuration options and examples.                                  *
   *                                                                          *
   ***************************************************************************/
-  '/api/channel' : 'Channel.find',
   '/api/channel/:channelID/join' : 'Channel.join',
-  '/api/channel/:id' : 'Discussion.findOne'
 };

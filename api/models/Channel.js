@@ -6,19 +6,19 @@
  */
 
 module.exports = {
-  tableName: "sp_discussion",
+  tableName: "sp_channel",
   attributes: {
     name: {
       type: "string",
       unique: true
     },
-    isChannel: {
+    public: {
       type: "boolean",
-      defaultsTo: false
+      defaultsTo: true
     },
     participants: {
       collection: 'user',
-      via: 'discussions',
+      via: 'channels',
       dominant: true
     }
   }

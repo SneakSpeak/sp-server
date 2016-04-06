@@ -24,8 +24,8 @@ module.exports = {
       required: true,
       unique: true
     },
-    discussions: {
-      collection: 'discussion',
+    channels: {
+      collection: 'channel',
       via: 'participants'
     }
   },
@@ -90,7 +90,7 @@ module.exports = {
     // Check if the user exists
     User.findOne({
       where: {username: req.param("username")}
-    }).populate('discussions').exec( function (err, user){
+    }).populate('channels').exec( function (err, user){
         if(!user) return cb({status: 403, error: "Forbidden"}, null);
         return cb(err, user);
     });

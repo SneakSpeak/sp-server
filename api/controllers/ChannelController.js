@@ -1,12 +1,17 @@
 var actionUtil = require('../../node_modules/sails/lib/hooks/blueprints/actionUtil');
-
+/**
+ * ChannelController
+ *
+ * @description :: Server-side logic for managing Channels
+ * @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
+ */
 
 module.exports = {
-  find: function find(req, res ) {
+	find: function find(req, res ) {
 
-    var query = Discussion.find()
+    var query = Channel.find()
       .where( actionUtil.parseCriteria(req) )
-      .where( {isChannel: true})
+      .where( {public: true})
       .limit( actionUtil.parseLimit(req) )
       .skip( actionUtil.parseSkip(req) )
       .sort( actionUtil.parseSort(req) );
@@ -17,8 +22,8 @@ module.exports = {
         // Only `.watch()` for new instances of the model if
         // `autoWatch` is enabled.
         if (req._sails.hooks.pubsub && req.isSocket) {
-          Discussion.subscribe(req, matchingRecords);
-          if (req.options.autoWatch) { Discussion.watch(req); }
+          Channel.subscribe(req, matchingRecords);
+          if (req.options.autoWatch) { Channel.watch(req); }
           // Also subscribe to instances of all associated models
           _.each(matchingRecords, function (record) {
             actionUtil.subscribeDeep(req, record);
@@ -28,39 +33,59 @@ module.exports = {
         res.ok(matchingRecords);
       });
     },
+    findOne: function findOne(req, res ) {
 
-    create: function(req, res) {
-      User.authUser(req, function(err, user) {
-        if(err) return res.negotiate(err);
+      var pk = actionUtil.requirePk(req);
 
-        Discussion.create({
-          name: req.param("name"),
-          isChannel: true,
-        }).exec(function createdChannel(err, channel) {
-          if(err) return res.negotiate(err)
+        var query = Channel.findOne(pk);
+        query = actionUtil.populateRequest(query, req);
+        query.exec(function Channel(err, matchingRecord) {
+          if (err) return res.serverError(err);
+          if(!matchingRecord) return res.notFound('No record found with the specified `id`.');
+          if(!matchingRecord.public) {
+            User.authUser(req, function(err, user) {
+              if(err) return res.negotiate(err);
+              if(!user) return res.notFound();
 
-          user.discussions.add(channel);
-          user.save();
-          return res.json(channel);
-        })
-      });
+              //user.populate('channels');
+
+              var isParticipant = user.channels.find(function (d) {
+                sails.log(d);
+                return d.id === matchingRecord.id;
+              });
+
+              if(!isParticipant) {
+                return res.json(403, {error: "Acces Denied"});
+              }
+              return res.ok(matchingRecord);
+            })
+          } else {
+            return res.ok(matchingRecord);
+          }
+          if (req._sails.hooks.pubsub && req.isSocket) {
+            Channel.subscribe(req, matchingRecord);
+            actionUtil.subscribeDeep(req, matchingRecord);
+          }
+
+          //return res.ok(matchingRecord);
+        });
     },
     join: function joinChannel(req, res) {
       User.authUser(req, function(err, user) {
         if (err) return res.negotiate(err);
 
-        Discussion.findOne(req.param("channelID"))
+        Channel.findOne(req.param("channelID"))
           //.where({isChannel: true})
           .populate('participants')
           .exec(function joinChannel(err, channel) {
             if(err) return res.negotiate(err);
             if(!channel) return res.notFound("Channel Not Found");
 
-            user.discussions.add(channel);
+            user.channels.add(channel);
             user.save(function(err, u) {
               if(err) return res.negotiate(err);
 
-              Discussion.findOne(channel.id).populate('participants')
+              Channel.findOne(channel.id).populate('participants')
                 .exec(function response(err, c) {
                   return res.ok(c);
                 })
@@ -68,5 +93,21 @@ module.exports = {
             // return res.json(channel);
           })
       })
-    }
+    },
+    create: function(req, res) {
+      User.authUser(req, function(err, user) {
+        if(err) return res.negotiate(err);
+
+        Channel.create({
+          name: req.param("name"),
+          public: req.param("public") ? req.param("public") : true,
+        }).exec(function createdChannel(err, channel) {
+          if(err) return res.negotiate(err)
+
+          user.channels.add(channel);
+          user.save();
+          return res.json(channel);
+        })
+      });
+    },
 };
