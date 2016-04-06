@@ -84,14 +84,15 @@ module.exports = {
 
   authUser: function( req, cb ){
     if(!req.param("username")) {
-      return cb("Invalid Criteria");
+      return cb({status: 401, error: "Unauthorized"});
     }
 
     // Check if the user exists
     User.findOne({
       where: {username: req.param("username")}
     }).populate('discussions').exec( function (err, user){
-        cb(err, user);
+        if(!user) return cb({status: 403, error: "Forbidden"}, null);
+        return cb(err, user);
     });
 
   }
