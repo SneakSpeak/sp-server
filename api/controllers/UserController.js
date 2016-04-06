@@ -1,3 +1,4 @@
+var actionUtil = require('../../node_modules/sails/lib/hooks/blueprints/actionUtil');
 /**
  * UserController
  *
@@ -133,14 +134,51 @@ module.exports = {
       });
     });
   },
-  discussions: function discussions(req, res) {
+  channels: function channels(req, res) {
     User.authUser(req, function(err, user) {
-      User.findOne({username: user.username}).populate('discussions')
-        .exec(function (err, discussions) {
+      User.findOne({username: user.username}).populate('channels')
+        .exec(function (err, channels) {
           if(err) return res.negotiate(err);
-          return res.json(discussions.discussions);
+          return res.json(channels.channels);
         });
     })
 
-  }
+  },
+  find: function find(req, res ) {
+
+    var query = User.find()
+      .where( actionUtil.parseCriteria(req))
+      .limit( actionUtil.parseLimit(req) )
+      .skip( actionUtil.parseSkip(req) )
+      .sort( actionUtil.parseSort(req) );
+      query = actionUtil.populateRequest(query, req);
+      query.exec(function found(err, matchingRecords) {
+        if (err) return res.serverError(err);
+
+        var userArray = matchingRecords.map(function(a) {return a.username;});
+        matchingRecords = userArray;
+        // Only `.watch()` for new instances of the model if
+        // `autoWatch` is enabled.
+        if (req._sails.hooks.pubsub && req.isSocket) {
+          User.subscribe(req, matchingRecords);
+          if (req.options.autoWatch) { User.watch(req); }
+          // Also subscribe to instances of all associated models
+          _.each(matchingRecords, function (record) {
+            actionUtil.subscribeDeep(req, record);
+          });
+        }
+
+        res.ok(matchingRecords);
+      });
+    },
+    me: function(req, res) {
+      User.authUser(req, function(err, user) {
+        if(err) return res.negotiate(err);
+
+        return (function(){
+          var obj = user;
+          return res.ok(user.me());
+        })();
+      })
+    }
 };

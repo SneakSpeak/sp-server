@@ -27,6 +27,14 @@ module.exports = {
     channels: {
       collection: 'channel',
       via: 'participants'
+    },
+    toJSON: function() {
+      return this.username;
+    },
+    me: function() {
+      var me = Object.assign({}, this);
+      delete me.password;
+      return me;
     }
   },
 
@@ -95,7 +103,8 @@ module.exports = {
         return cb(err, user);
     });
 
-  }
+  },
+
 
 
 
