@@ -8,45 +8,8 @@ var actionUtil = require('../../node_modules/sails/lib/hooks/blueprints/actionUt
 
 module.exports = {
 
-
   /**
-   * `UserController.login()`
-   */
-  login: function (req, res) {
-
-    // See `api/responses/login.js`
-    return res.login({
-      username: req.param('username'),
-      //password: req.param('password'),
-      successRedirect: '/',
-      invalidRedirect: '/login'
-    });
-  },
-
-
-  /**
-   * `UserController.logout()`
-   */
-  logout: function (req, res) {
-
-    // "Forget" the user from the session.
-    // Subsequent requests from this user agent will NOT have `req.session.me`.
-    req.session.me = null;
-
-    // If this is not an HTML-wanting browser, e.g. AJAX/sockets/cURL/etc.,
-    // send a simple response letting the user agent know they were logged out
-    // successfully.
-    if (req.wantsJSON) {
-      return res.ok('Logged out successfully!');
-    }
-
-    // Otherwise if this is an HTML-wanting browser, do a redirect.
-    return res.redirect('/');
-  },
-
-
-  /**
-   * `UserController.signup()`
+   *
    */
   register: function (req, res) {
 
@@ -68,30 +31,6 @@ module.exports = {
       return res.redirect('/api/user/list?token=' + user.token);
     });
   },
-
-
-  // poke: function poke(req, res) {
-  //   var useri = "meitsi";
-  //   User.findOne({
-  //     username: useri,
-  //   }, function(err, user) {
-  //     if (err) return res.negotiate(err);
-  //     if(!user) return res.send(404,"User Not Found");
-  //     sails.log("Pushing...");
-  //     sails.log("Token: [" + user.token + "]");
-  //     sails.log("Server API key: " + sails.config.GCMkey);
-  //     PusherService
-  //       .send([user.token], {
-  //         body: "Hello world!"
-  //       })
-  //       /*
-  //       .then(function(response) {sails.log("Push OK: " + JSON.stringify(response)); res.ok("Push sent!");})
-  //       .catch(function(err) {sails.log("Push FAILED: " + err); return res.negotiate();});
-  //       */
-  //      .then(console.log.bind(console))
-  //      .catch(console.error.bind(console));
-  //   })
-  // },
 
   poke: function poke(req, res) {
     var useri = req.param("username");
