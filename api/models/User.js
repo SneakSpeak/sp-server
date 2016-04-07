@@ -28,9 +28,12 @@ module.exports = {
       collection: 'channel',
       via: 'participants'
     },
+    // For returning only a username string. It's also a security issue
+    // to hide passwords and tokens with this overriden method.
     toJSON: function() {
       return this.username;
     },
+    // Return user's information except for the password.
     me: function() {
       var me = Object.assign({}, this);
       delete me.password;
@@ -61,7 +64,7 @@ module.exports = {
     }, function(err, user) {
       if(err) {
         sails.log(err)
-        throw err;
+        return cb(err);
       };
       cb();
     });
@@ -69,42 +72,20 @@ module.exports = {
   },
 
 
-
-  /**
-   * Check validness of a login using the provided inputs.
-   * But encrypt the password first.
-   *
-   * @param  {Object}   inputs
-   *                     • username    {String}
-   *                     • password {String}
-   * @param  {Function} cb
-   */
-
-  attemptLogin: function (inputs, cb) {
-
-    User.findOne({
-      username: inputs.username,
-      // TODO: But encrypt the password first
-      password: inputs.password
-    })
-    .exec(cb);
-  },
-
   authUser: function( req, cb ){
-    if(!req.param("username")) {
+    if(!req.param("token")) {
       return cb({status: 401, error: "Unauthorized"});
     }
 
     // Check if the user exists
     User.findOne({
-      where: {username: req.param("username")}
+      where: {token: req.param("token")}
     }).populate('channels').exec( function (err, user){
         if(!user) return cb({status: 403, error: "Forbidden"}, null);
         return cb(err, user);
     });
 
   },
-
 
 
 
