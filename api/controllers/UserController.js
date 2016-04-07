@@ -123,7 +123,7 @@ module.exports = {
       if(!user) return res.notFound();
       // Find all users except the one asking the list
       User.find({
-        where: {username: {"!": req.param("username")} },
+        where: {username: {"!": user.username} },
         select: ['username']
 
       }, function(err, users) {
