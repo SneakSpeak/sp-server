@@ -131,5 +131,31 @@ module.exports = {
 
 
       })
+    },
+    joinOrCreate: function joinOrCreate(req, res){
+      // Authenticate
+      User.authUser(req, function(err, user) {
+        // Handle authentication errors
+        if(err) return res.negotiate(err);
+
+        // Find or create channel with the name
+        Channel.findOrCreate({name: req.param("name")})
+          .limit(1)
+          .exec(function( err, channel) {
+            if(err) return res.negotiate(err);
+
+            // Join the channel
+            user.channels.add(channel);
+            user.save(function(err, u) {
+              if(err) return res.negotiate(err);
+
+              // Get and return the channel with the new join
+              Channel.findOne(channel.id).populate('participants')
+                .exec(function response(err, c) {
+                  return res.ok(c);
+                });
+              });
+            });
+      });
     }
 };
