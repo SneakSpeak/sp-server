@@ -171,6 +171,8 @@ module.exports = {
         res.ok(matchingRecords);
       });
     },
+    // Show the users info. Only accessible for the same user.
+    // Doesn't show the password
     me: function(req, res) {
       User.authUser(req, function(err, user) {
         if(err) return res.negotiate(err);
@@ -179,6 +181,21 @@ module.exports = {
           var obj = user;
           return res.ok(user.me());
         })();
+      })
+    },
+    // Send a message to user via GCM XMPP
+    message: function(req, res) {
+      User.authUser(req, function(err, user) {
+        if(err) return res.negotiate(err);
+        var receiverName = req.param('name');
+        var message = req.param('message');
+        if(!receiverName || !message) {
+          return res.badRequest({error: "'name' and 'message' required."});
+        }
+
+        // Tell a white lie to the client
+        res.ok();
+        sails.hooks["sp-gcm"].sendToUser(receiverName, user.username, message);
       })
     }
 };

@@ -25,7 +25,7 @@ var sendToUser = function sendToUser(receiverName, title, message, messageId) {
       return false;
     }
 
-    gcm.send(toUser.token, {time_to_live: 0, data: {message: message, title: title}, notification: {title: title, text: message.substring(0,41)}}, {delivery_receipt_requested: false},
+    gcm.send(toUser.token, {time_to_live: 0, data: {message: message, title: title}, notification: {title: title, text: message.substring(0,41)}}, {delivery_receipt_requested: true},
       function(err, messageId, to) {
         if(err) {
           sails.log(err);
