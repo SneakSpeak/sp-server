@@ -46,5 +46,6 @@ module.exports.routes = {
   *                                                                          *
   ***************************************************************************/
   '/api/channel/:channelID/join' : 'Channel.join',
+  '/api/channel/:channelID/message': 'Channel.message',
   '/api/user/:name/message' : 'User.message',
 };

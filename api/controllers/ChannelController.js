@@ -110,4 +110,26 @@ module.exports = {
         })
       });
     },
+    // Send a message to the channel via GCM XMPP
+    message: function(req, res) {
+      User.authUser(req, function(err, user) {
+        if(err) return res.negotiate(err);
+        var channelID = req.param('channelID');
+        var message = req.param('message');
+        if(!channelID || !message) {
+          return res.badRequest({error: "'channelID' and 'message' required."});
+        }
+
+        Channel.findOne(channelID).populate('participants')
+          .exec(function (err, channel) {
+            if(err) return res.negotiate(err);
+            if(!channel) return res.notFound();
+
+            sails.hooks["sp-gcm"].sendToChannel(channel, user.username, message);
+            return res.ok();
+          })
+
+
+      })
+    }
 };

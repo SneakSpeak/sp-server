@@ -36,11 +36,44 @@ var sendToUser = function sendToUser(receiverName, title, message, messageId) {
       });
   });
 }
-
-//var sendToDiscussion(discussion, )
+/**
+ * [sendToChannel description]
+ * @param  {Object} channel    [description]
+ * @param  {String} senderName [description]
+ * @param  {String} message    [description]
+ */
+var sendToChannel = function sendToChannel(channel, senderName, message) {
+  console.log(channel.participants);
+  channel.participants.forEach(function(user) {
+    gcm.send(user.token,
+      {
+        time_to_live: 0,
+        data: {
+          channelID: channel.id,
+          channelName: channel.name,
+          message: message,
+          title: senderName
+        },
+        notification: {
+          title: channel.name,
+          text: (senderName + ": " + message).substring(0,41)
+        }
+      }, {delivery_receipt_requested: true},
+      function(err, messageId, to) {
+        if(err) {
+          sails.log(err);
+          return false;
+        }
+        sails.log("Channel("+channel.name+") message successfully sent to "+user.username+" (" + messageId + ")");
+        return true;
+      }
+    );
+})
+}
 
 
 module.exports = {
   transmitPrivateMessage: transmitPrivateMessage,
-  sendToUser: sendToUser
+  sendToUser: sendToUser,
+  sendToChannel: sendToChannel
 }
