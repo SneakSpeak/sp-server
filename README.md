@@ -20,7 +20,7 @@ sure that the postgresql database is up and running.
 
 Start the server with `sails lift` or `npm start`.
 
-[## API]
+## API
 #### User Authentication
 Users are authenticated with GCM Device Token. Eg.
 `GET /api/user/list?token=<device token>` or
