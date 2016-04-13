@@ -43,8 +43,9 @@ module.exports = {
       schema: true
     }
   },
-  push: {
-    gcm: process.env.GCMKey
-  }
+  gcm : {
+      apiKey : process.env.GCM_KEY, //Server API key
+      projectNumber: process.env.PROJECT_NUMBER // Google Project Number as a number
+  },
 
 };

@@ -10,6 +10,30 @@
  *
  */
 
+var dbSettings = {};
+// Detect Heeroku
+if(process.env.DATABASE_URL) {
+  dbSettings = {
+
+    adapter: 'sails-postgresql',
+    url: process.env.DATABASE_URL,
+    pool: false,
+    ssl: true,
+    schema: true
+
+  }
+}
+else {
+  dbSettings = {
+    adapter: 'sails-postgresql',
+    host: 'localhost',
+
+
+    //port: '5432',
+    poolSize: 1
+  }
+}
+
 module.exports = {
 
   /***************************************************************************
@@ -34,13 +58,10 @@ module.exports = {
   //   }
   // }
   connections: {
-    postgresql: {
-      adapter: 'sails-postgresql',
-      host: 'localhost',
-
-
-      //port: '5432',
-      poolSize: 1
-    }
-  }
+    postgresql: dbSettings
+  },
+  gcm : {
+      apiKey : process.env.GCM_KEY, //Server API key
+      projectNumber: process.env.PROJECT_NUMBER // Google Project Number as a number
+  },
 };
