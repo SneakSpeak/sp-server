@@ -1,6 +1,6 @@
 # sp-server
 
-SneakSpeak server is a [Sails.js](http://sailsjs.org/) app for self hosted chat service. sp-server provides an HTTP API to send
+SneakSpeak server is a [Sails.js](http://sailsjs.org/) app for self hosted chat service. sp-server provides an [HTTP API](#api) to send
 messages to individual users and users in a channel. Downstream to clients,
 [SneakSpeak Android app](https://github.com/SneakSpeak/sp-android),
 is done via [Google Cloud Messaging](https://developers.google.com/cloud-messaging/).
