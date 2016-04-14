@@ -107,7 +107,30 @@ Content-Type: application/json; charset=utf-8
     ]
 }
 ```
-
+### `GET /api/user/channels *`
+Array of channels the user is participating.
+```
+GET /api/user/channels?token=123 HTTP/1.1
+Content-Type: application/json
+```
+```
+[
+  {
+    "name": "sp4",
+    "public": true,
+    "id": 1,
+    "createdAt": "2016-04-06T10:51:09.000Z",
+    "updatedAt": "2016-04-06T10:51:09.000Z"
+  },
+  {
+    "name": "foobar",
+    "public": true,
+    "id": 2,
+    "createdAt": "2016-04-06T10:58:18.000Z",
+    "updatedAt": "2016-04-06T10:58:18.000Z"
+  }
+]
+```
 ### `POST /api/user/:name/message *`
 Sends a GCM XMPP message to the user with username :name.
 ```
