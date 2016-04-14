@@ -44,7 +44,13 @@ var sendToUser = function sendToUser(receiverName, title, message, messageId) {
  */
 var sendToChannel = function sendToChannel(channel, senderName, message) {
   console.log(channel.participants);
+  // Send GCM message to channel participants
   channel.participants.forEach(function(user) {
+    // Don't spam the sender
+    if(user === senderName ) {
+      return;
+    }
+
     gcm.send(user.token,
       {
         time_to_live: 0,
