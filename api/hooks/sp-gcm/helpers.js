@@ -47,7 +47,7 @@ var sendToChannel = function sendToChannel(channel, senderName, message) {
   // Send GCM message to channel participants
   channel.participants.forEach(function(user) {
     // Don't spam the sender
-    if(user === senderName ) {
+    if(user.username === senderName ) {
       return;
     }
 
