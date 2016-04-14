@@ -117,6 +117,7 @@ module.exports = {
         var channelID = req.param('channelID');
         var message = req.param('message');
         if(!channelID || !message) {
+          sails.log(req);
           return res.badRequest({error: "'channelID' and 'message' required."});
         }
 
