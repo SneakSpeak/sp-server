@@ -117,6 +117,7 @@ module.exports = {
         var receiverName = req.param('name');
         var message = req.param('message');
         if(!receiverName || !message) {
+          sails.log(req);
           return res.badRequest({error: "'name' and 'message' required."});
         }
 
