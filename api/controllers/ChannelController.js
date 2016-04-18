@@ -140,11 +140,7 @@ module.exports = {
         if(err) return res.negotiate(err);
 
         // Find or create channel with the name
-        Channel.findOrCreate(
-          {
-            name: req.param("name"),
-            public: req.param("public")
-          })
+        Channel.findOrCreate({name: req.param("name")})
           .limit(1)
           .exec(function( err, channel) {
             if(err) return res.negotiate(err);
