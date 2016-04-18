@@ -139,12 +139,18 @@ module.exports = {
         // Handle authentication errors
         if(err) return res.negotiate(err);
 
+        var options = {
+          name: req.param("name"),
+          public: true //Default
+        }
+
+        // Override default value for public if provided in the request
+        if (req.param("public") === true || req.param("public") === false) {
+          options = Object.assign(options, {public: req.param("public")});
+        } else
+
         // Find or create channel with the name
-        Channel.findOrCreate(
-          {
-            name: req.param("name"),
-            public: req.param("public")
-          })
+        Channel.findOrCreate(options)
           .limit(1)
           .exec(function( err, channel) {
             if(err) return res.negotiate(err);
