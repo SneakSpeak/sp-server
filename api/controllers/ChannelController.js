@@ -147,7 +147,7 @@ module.exports = {
         // Override default value for public if provided in the request
         if (req.param("public") === true || req.param("public") === false) {
           options = Object.assign(options, {public: req.param("public")});
-        } else
+        }
 
         // Find or create channel with the name
         Channel.findOrCreate(options)
